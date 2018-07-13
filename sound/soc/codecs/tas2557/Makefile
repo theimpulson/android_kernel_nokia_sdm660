@@ -5,3 +5,4 @@ snd-soc-tas2557-objs += tas2557-misc.o
 snd-soc-tas2557-objs += tiload.o
 
 obj-$(CONFIG_SND_SOC_TAS2557) += snd-soc-tas2557.o
+CFLAGS_tas2557-misc.o +=  $(call cc-disable-warning,shift-overflow)
