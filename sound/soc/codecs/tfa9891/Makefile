@@ -19,3 +19,4 @@ snd-soc-tfa98xx-objs += tfa_init.o
 snd-soc-tfa98xx-objs += tfa_debug.o
 
 obj-$(CONFIG_SND_SOC_TFA9891) += snd-soc-tfa98xx.o
+CFLAGS_tfa_dsp.o += $(call cc-disable-warning, enum-conversion)
