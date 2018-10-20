@@ -73,6 +73,9 @@ ifeq ($(CONFIG_COMPAT_VDSO), y)
 endif
 
 KBUILD_CFLAGS	+= $(vdso32)
+
+KBUILD_CFLAGS	+= $(call cc-option,-march=armv8-a+crypto+crc,) $(call cc-option,-mcpu=cortex-a53+crypto+crc,)
+
 KBUILD_CFLAGS	+= -fno-pic
 KBUILD_CFLAGS	+= $(call cc-option, -mpc-relative-literal-loads)
 KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
