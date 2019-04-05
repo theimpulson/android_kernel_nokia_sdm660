@@ -2781,11 +2781,11 @@ _slumber(struct kgsl_device *device)
 static int _suspend(struct kgsl_device *device)
 {
 	int ret = 0;
-/* nancy add to solve kgsl kernel panic from QC patch begin */ 
-    if ((KGSL_STATE_NONE == device->state) ||
-            (KGSL_STATE_INIT == device->state))
-        return ret;
-/* nancy add to solve kgsl kernel panic from QC patch end */
+
+	if ((device->state == KGSL_STATE_NONE) ||
+			(device->state == KGSL_STATE_INIT) ||
+			(device->state == KGSL_STATE_SUSPEND))
+		return ret;
 
 	/* drain to prevent from more commands being submitted */
 	device->ftbl->drain(device);
