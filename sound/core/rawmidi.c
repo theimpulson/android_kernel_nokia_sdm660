@@ -1006,6 +1006,9 @@ static long snd_rawmidi_kernel_read1(struct snd_rawmidi_substream *substream,
 		result += count1;
 		count -= count1;
 	}
+
+	if (userbuf)
+		mutex_unlock(&runtime->realloc_mutex);
 	spin_unlock_irqrestore(&runtime->lock, flags);
 	if (userbuf)
 		mutex_unlock(&runtime->realloc_mutex);
@@ -1069,6 +1072,7 @@ static ssize_t snd_rawmidi_read(struct file *file, char __user *buf, size_t coun
 		buf += count1;
 		count -= count1;
 	}
+
 	return result;
 }
 

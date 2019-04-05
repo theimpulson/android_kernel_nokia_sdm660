@@ -3969,7 +3969,10 @@ static void dwc3_otg_sm_work(struct work_struct *w)
 				mdwc->otg_state = OTG_STATE_A_IDLE;
 				goto ret;
 			}
-			pm_wakeup_event(mdwc->dev, DWC3_WAKEUP_SRC_TIMEOUT);
+			if (mdwc->no_wakeup_src_in_hostmode) {
+				pm_wakeup_event(mdwc->dev,
+					DWC3_WAKEUP_SRC_TIMEOUT);
+			}
 		}
 		break;
 
@@ -3987,7 +3990,10 @@ static void dwc3_otg_sm_work(struct work_struct *w)
 			dbg_event(0xFF, "XHCIResume", 0);
 			if (dwc)
 				pm_runtime_resume(&dwc->xhci->dev);
-			pm_wakeup_event(mdwc->dev, DWC3_WAKEUP_SRC_TIMEOUT);
+			if (mdwc->no_wakeup_src_in_hostmode) {
+				pm_wakeup_event(mdwc->dev,
+					DWC3_WAKEUP_SRC_TIMEOUT);
+			}
 		}
 		break;
 
@@ -4032,6 +4038,10 @@ static int dwc3_msm_pm_prepare(struct device *dev)
 }
 
 #ifdef CONFIG_PM_SLEEP
+#ifdef CONFIG_FIH_MT_SLEEP
+extern int ftm_sleep_test;
+#endif
+
 static int dwc3_msm_pm_suspend(struct device *dev)
 {
 	int ret = 0;
@@ -4042,7 +4052,12 @@ static int dwc3_msm_pm_suspend(struct device *dev)
 	dbg_event(0xFF, "PM Sus", 0);
 
 	flush_workqueue(mdwc->dwc3_wq);
+#ifdef CONFIG_FIH_MT_SLEEP
+	pr_info("%s atomic_read(&dwc->in_lpm)=%d, ftm_sleep_test=%d\n", __func__, atomic_read(&dwc->in_lpm), ftm_sleep_test);
+	if (!atomic_read(&dwc->in_lpm) && !mdwc->no_wakeup_src_in_hostmode && !ftm_sleep_test) {
+#else
 	if (!atomic_read(&dwc->in_lpm) && !mdwc->no_wakeup_src_in_hostmode) {
+#endif
 		dev_err(mdwc->dev, "Abort PM suspend!! (USB is outside LPM)\n");
 		return -EBUSY;
 	}
@@ -4079,6 +4094,11 @@ static int dwc3_msm_pm_freeze(struct device *dev)
 
 	mdwc->hs_phy->flags &= ~PHY_HOST_MODE;
 
+#ifdef CONFIG_FIH_MT_SLEEP
+	if (ftm_sleep_test) {
+		mdwc->resume_pending = true;
+	}
+#endif
 	ret = dwc3_msm_suspend(mdwc, true);
 	if (!ret)
 		atomic_set(&mdwc->pm_suspended, 1);

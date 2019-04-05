@@ -3512,7 +3512,19 @@ static int msm_isp_request_frame(struct vfe_device *vfe_dev,
 			__func__, __LINE__, frame_id);
 		goto error;
 	}
-	if ((vfe_dev->axi_data.src_info[frame_src].active && (frame_id !=
+	if(vfe_dev->axi_data.src_info[frame_src].active && (frame_id ==
+		vfe_dev->axi_data.src_info[frame_src].frame_id) && 
+		(stream_info->undelivered_request_cnt <= MAX_BUFFERS_IN_HW)) {		
+         vfe_dev->isp_page->drop_reconfig =1;
+		 pr_err("%s:%d vfe_%d request_frame %d cur frame id %d pix %d\n",
+			__func__, __LINE__,vfe_dev->pdev->id,frame_id,
+			vfe_dev->axi_data.src_info[frame_src].frame_id,
+			vfe_dev->axi_data.src_info[frame_src].active);
+		 trace_printk("%s:%d vfe%d request_frame %d cur frame id %d pix %d\n",
+			__func__, __LINE__, vfe_dev->pdev->id,frame_id,
+			vfe_dev->axi_data.src_info[frame_src].frame_id,
+			vfe_dev->axi_data.src_info[frame_src].active);
+	 }else if ((vfe_dev->axi_data.src_info[frame_src].active && (frame_id !=
 		vfe_dev->axi_data.src_info[frame_src].frame_id + vfe_dev->
 		axi_data.src_info[frame_src].sof_counter_step)) ||
 		((!vfe_dev->axi_data.src_info[frame_src].active))) {
