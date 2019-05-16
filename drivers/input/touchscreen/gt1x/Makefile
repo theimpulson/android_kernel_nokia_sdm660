@@ -8,3 +8,4 @@ obj-$(CONFIG_TOUCHSCREEN_GX)	+=  gt1x.o
 obj-$(CONFIG_TOUCHSCREEN_GX)	+=  gt1x_update.o
 obj-$(CONFIG_TOUCHSCREEN_GX)	+=  gt1x_test.o
 obj-$(CONFIG_TOUCHSCREEN_GX)	+=  test_function.o
+CFLAGS_test_function.o += $(call cc-disable-warning, invalid-source-encoding)
