@@ -55,6 +55,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
 			qcom,ea = <&ea0>;
 			efficiency = <1126>;
+			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
 			next-level-cache = <&L2_1>;
 			L2_1: l2-cache {
 				compatible = "arm,arch-cache";
@@ -84,6 +85,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
 			qcom,ea = <&ea1>;
 			efficiency = <1126>;
+			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;			
 			next-level-cache = <&L2_1>;
 			L1_I_101: l1-icache {
 				compatible = "arm,arch-cache";
@@ -107,6 +109,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
 			qcom,ea = <&ea2>;
 			efficiency = <1126>;
+			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;		
 			next-level-cache = <&L2_1>;
 			L1_I_102: l1-icache {
 				compatible = "arm,arch-cache";
@@ -130,6 +133,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
 			qcom,ea = <&ea3>;
 			efficiency = <1126>;
+			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;		
 			next-level-cache = <&L2_1>;
 			L1_I_103: l1-icache {
 				compatible = "arm,arch-cache";
@@ -153,6 +157,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
 			qcom,ea = <&ea4>;
 			efficiency = <1024>;
+			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			next-level-cache = <&L2_0>;
 			L2_0: l2-cache {
 				compatible = "arm,arch-cache";
@@ -182,6 +187,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
 			qcom,ea = <&ea5>;
 			efficiency = <1024>;
+			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			next-level-cache = <&L2_0>;
 			L1_I_1: l1-icache {
 				compatible = "arm,arch-cache";
@@ -205,6 +211,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
 			qcom,ea = <&ea6>;
 			efficiency = <1024>;
+			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			next-level-cache = <&L2_0>;
 			L1_I_2: l1-icache {
 				compatible = "arm,arch-cache";
@@ -228,6 +235,7 @@
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
 			qcom,ea = <&ea7>;
 			efficiency = <1024>;
+			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			next-level-cache = <&L2_0>;
 			L1_I_3: l1-icache {
 				compatible = "arm,arch-cache";
@@ -280,7 +288,68 @@
 			};
 		};
 	};
+	
+	energy_costs: energy-costs {
+		compatible = "sched-energy";
 
+		CPU_COST_0: core-cost0 {
+			busy-cost-data = <
+				193 24
+				274 43
+				339 64
+				426 92
+				467 112
+				532 176
+				560 206
+			>;
+			idle-cost-data = <
+				20 16 12 8
+			>;
+		};
+		CPU_COST_1: core-cost1 {
+			busy-cost-data = <
+				193 24
+				274 43
+				339 64
+				426 92
+				467 112
+				532 176
+				560 206
+			>;
+			idle-cost-data = <
+				20 16 12 8
+			>;
+		};
+		CLUSTER_COST_0: cluster-cost0 {
+			busy-cost-data = <
+				193 8
+				274 14
+				339 20
+				426 29
+				467 35
+				532 49
+				560 57
+			>;
+			idle-cost-data = <
+				4 3 2 1
+			>;
+		};
+		CLUSTER_COST_1: cluster-cost1 {
+			busy-cost-data = <
+				516 135
+				650 193
+				809 272
+				811 292
+				908 363
+				995 397
+				1024 406
+			>;
+			idle-cost-data = <
+				4 3 2 1
+			>;
+		};
+	};
+	
 	clocks {
 		xo_board {
 			compatible = "fixed-clock";
@@ -1344,50 +1413,43 @@
 
 		qcom,perfcl-speedbin0-v0 =
 			<   300000000 0x0004000f 0x01200020 0x1 1 >,
-			<   787200000 0x05040029 0x04200020 0x1 2 >,
-			<  1113600000 0x0404003a 0x052e002e 0x1 3 >,
-			<  1344000000 0x04040046 0x07380038 0x2 4 >,
-			<  1516800000 0x0404004f 0x073f003f 0x2 5 >,
-			<  1670400000 0x04040057 0x08450045 0x2 6 >,
-			<  1881600000 0x04040062 0x094e004e 0x2 7 >,
-			<  2016000000 0x04040069 0x0a540054 0x2 8 >,
-			<  2150400000 0x04040070 0x0b590059 0x2 9 >,
-			<  2380800000 0x0404007c 0x0c630063 0x3 10 >;
+			<   614400000 0x05040020 0x03200020 0x1 2 >,
+			<   883200000 0x0404002e 0x04250025 0x1 3 >,
+			<  1094400000 0x04040039 0x052e002e 0x2 4 >,
+			<  1382400000 0x04040048 0x07390039 0x2 5 >,
+			<  1536000000 0x04040050 0x08400040 0x2 6 >,
+			<  1728000000 0x0404005a 0x09480048 0x2 7 >,
+			<  1843200000 0x04040060 0x094c004c 0x3 8 >;
 
 		qcom,perfcl-speedbin1-v0 =
 			<   300000000 0x0004000f 0x01200020 0x1 1 >,
-			<   787200000 0x05040029 0x04200020 0x1 2 >,
-			<  1113600000 0x0404003a 0x052e002e 0x1 3 >,
-			<  1344000000 0x04040046 0x07380038 0x2 4 >,
-			<  1516800000 0x0404004f 0x073f003f 0x2 5 >,
-			<  1670400000 0x04040057 0x08450045 0x2 6 >,
-			<  1881600000 0x04040062 0x094e004e 0x2 7 >,
-			<  2016000000 0x04040069 0x0a540054 0x2 8 >,
-			<  2150400000 0x04040070 0x0b590059 0x2 9 >,
-			<  2208000000 0x04040073 0x0b5c005c 0x3 10 >;
+			<   614400000 0x05040020 0x03200020 0x1 2 >,
+			<   883200000 0x0404002e 0x04250025 0x1 3 >,
+			<  1094400000 0x04040039 0x052e002e 0x2 4 >,
+			<  1382400000 0x04040048 0x07390039 0x2 5 >,
+			<  1536000000 0x04040050 0x08400040 0x2 6 >,
+			<  1728000000 0x0404005a 0x09480048 0x2 7 >,
+			<  1843200000 0x04040060 0x094c004c 0x3 8 >;
 
 		qcom,perfcl-speedbin2-v0 =
 			<   300000000 0x0004000f 0x01200020 0x1 1 >,
-			<   787200000 0x05040029 0x04200020 0x1 2 >,
-			<  1113600000 0x0404003a 0x052e002e 0x1 3 >,
-			<  1344000000 0x04040046 0x07380038 0x2 4 >,
-			<  1516800000 0x0404004f 0x073f003f 0x2 5 >,
-			<  1670400000 0x04040057 0x08450045 0x2 6 >,
-			<  1881600000 0x04040062 0x094e004e 0x2 7 >,
-			<  2016000000 0x04040069 0x0a540054 0x2 8 >,
-			<  2150400000 0x04040070 0x0b590059 0x2 9 >,
-			<  2380800000 0x0404007c 0x0c630063 0x3 10 >,
-			<  2515200000 0x04040083 0x0d680068 0x3 11 >;
+			<   614400000 0x05040020 0x03200020 0x1 2 >,
+			<   883200000 0x0404002e 0x04250025 0x1 3 >,
+			<  1094400000 0x04040039 0x052e002e 0x2 4 >,
+			<  1382400000 0x04040048 0x07390039 0x2 5 >,
+			<  1536000000 0x04040050 0x08400040 0x2 6 >,
+			<  1728000000 0x0404005a 0x09480048 0x2 7 >,
+			<  1843200000 0x04040060 0x094c004c 0x3 8 >;
 
 		qcom,perfcl-speedbin3-v0 =
 			<   300000000 0x0004000f 0x01200020 0x1 1 >,
-			<   787200000 0x05040029 0x04200020 0x1 2 >,
-			<  1113600000 0x0404003a 0x052e002e 0x1 3 >,
-			<  1344000000 0x04040046 0x07380038 0x2 4 >,
-			<  1516800000 0x0404004f 0x073f003f 0x2 5 >,
-			<  1670400000 0x04040057 0x08450045 0x2 6 >,
-			<  1881600000 0x04040062 0x094e004e 0x2 7 >,
-			<  2016000000 0x04040069 0x0a540054 0x2 8 >;
+			<   614400000 0x05040020 0x03200020 0x1 2 >,
+			<   883200000 0x0404002e 0x04250025 0x1 3 >,
+			<  1094400000 0x04040039 0x052e002e 0x2 4 >,
+			<  1382400000 0x04040048 0x07390039 0x2 5 >,
+			<  1536000000 0x04040050 0x08400040 0x2 6 >,
+			<  1728000000 0x0404005a 0x09480048 0x2 7 >,
+			<  1843200000 0x04040060 0x094c004c 0x3 8 >;
 
 		qcom,up-timer = <1000 1000>;
 		qcom,down-timer = <1000 1000>;
