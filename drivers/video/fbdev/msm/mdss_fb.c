@@ -57,7 +57,7 @@
 #include "mdss_mdp.h"
 
 #ifdef CONFIG_KLAPSE
-#include "klapse.h"
+#include <linux/klapse.h>
 #endif
 
 //SW4-HL-Display-GlanceMode-00+{_20170524
