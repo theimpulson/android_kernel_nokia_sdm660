@@ -20,7 +20,9 @@ defconfig=PL2_defconfig
 BASE_DIR=/media/hdd/aayush/kernel
 KERNEL_DIR=$BASE_DIR/sdm660
 ANYKERNEL_DIR=$KERNEL_DIR/AnyKernel3
-KERNEL_IMG=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
+KERNEL_IMG=$KERNEL_DIR/arch/arm64/boot/Image.gz
+DT_IMAGE=$KERNEL_DIR/arch/arm64/boot/dt.img
+DTBTOOL=$KERNEL_DIR/tools/dtbToolCM
 UPLOAD_DIR=$BASE_DIR/$DEVICE
 
 # Export
@@ -47,12 +49,18 @@ function make_kernel() {
   fi
 }
 
+# Make DT.IMG
+function make_dt(){
+$DTBTOOL -2 -o $DT_IMAGE -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/qcom/
+}
+
 # Making zip
 function make_zip() {
 mkdir -p tmp_mod
 make -j4 modules_install INSTALL_MOD_PATH=tmp_mod INSTALL_MOD_STRIP=1
 find tmp_mod/ -name '*.ko' -type f -exec cp '{}' $ANYKERNEL_DIR/modules/system/lib/modules/ \;
 cp $KERNEL_IMG $ANYKERNEL_DIR
+cp $DT_IMAGE $ANYKERNEL_DIR
 mkdir -p $UPLOAD_DIR
 cd $ANYKERNEL_DIR
 zip -r9 UPDATE-AnyKernel2.zip * -x README UPDATE-AnyKernel2.zip
@@ -81,13 +89,15 @@ case $ch in
   1) echo -e "$cyan***********************************************"
      echo -e "          	Dirty          "
      echo -e "***********************************************$nocol"
-     make_kernel;;
+     make_kernel
+     make_dt ;;
   2) echo -e "$cyan***********************************************"
      echo -e "          	Clean          "
      echo -e "***********************************************$nocol"
      make clean
      make mrproper
-     make_kernel;;
+     make_kernel
+     make_dt;;
 esac
 
 if [ "$ziporkernel" = "1" ]; then
@@ -107,6 +117,9 @@ function cleanup(){
 rm -rf $KERNEL_DIR/tmp_mod/
 rm -rf $ANYKERNEL_DIR/Image.gz-dtb
 rm -rf $ANYKERNEL_DIR/modules/system/lib/modules/*.ko
+rm -rf $ANYKERNEL_DIR/dt.img
+rm -rf $KERNEL_DIR/arch/arm/boot/dts/*.dtb
+rm -rf $DT_IMAGE
 }
 
 options
