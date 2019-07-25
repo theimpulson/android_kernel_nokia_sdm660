@@ -10,11 +10,11 @@ nocol='\033[0m'
 
 # Kernel details
 KERNEL_NAME="FireKernel"
-VERSION="r1.1"
+VERSION="r1.x"
 DATE=$(date +"%d-%m-%Y-%I-%M")
 DEVICE="PL2"
 FINAL_ZIP=$KERNEL_NAME-$VERSION-$DATE-$DEVICE.zip
-defconfig=PL2_defconfig
+defconfig=omni_defconfig
 
 # Dirs
 BASE_DIR=/media/hdd/aayush/kernel
