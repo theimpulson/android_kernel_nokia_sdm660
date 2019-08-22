@@ -1,0 +1,26 @@
+##FK Props
+
+persist.radio.aosp_usr_pref_sel=true
+debug.cpurend.vsync=false 
+debug.hwui.use_buffer_age=false 
+debug.sf.early_gl_phase_offset_ns=1000000 
+debug.sf.early_phase_offset_ns=1000000 
+ro.qualcomm.cabl=2 
+vendor.display.disable_partial_split=1 
+vendor.display.disable_skip_validate=1 
+vendor.display.rotator_downscale=1 
+sdm.perf_hint_window=50 
+debug.composition.type=c2d 
+debug.mdpcomp.idletime=600 
+persist.hwc.mdpcomp.enable=true 
+persist.hwc.ptor.enable=true 
+debug.enable.sglscale=1 
+debug.egl.hw=1 
+debug.sf.disable_hwc=0 
+debug.sf.disable_backpressure=1 
+persist.hwc.mdpcomp.enable=true 
+persist.hwc.ptor.enable=true
+debug.sf.gpu_comp_tiling=1
+
+
+## END

@@ -23,10 +23,19 @@ block=/dev/block/bootdevice/by-name/boot;
 is_slot_device=1;
 ramdisk_compression=auto;
 
-
 ## AnyKernel methods (DO NOT CHANGE)
 # import patching functions/variables - see for reference
 . tools/ak3-core.sh;
+
+## begin vendor changes
+mount -o rw,remount -t auto /vendor >/dev/null;
+
+# Make a backup of vendor build.prop
+restore_file /vendor/build.prop;
+backup_file /vendor/build.prop;
+
+# Add performance tweaks
+append_file /vendor/build.prop "FKProps" build.prop
 
 ## AnyKernel install
 dump_boot;
