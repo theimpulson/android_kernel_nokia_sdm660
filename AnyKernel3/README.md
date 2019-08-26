@@ -64,6 +64,7 @@ set_perm_recursive <owner> <group> <dir_mode> <file_mode> <dir> [<dir2> ...]
 dump_boot
 split_boot
 unpack_ramdisk
+
 backup_file <file>
 restore_file <file>
 replace_string <file> <if search string> <original string> <replacement string> <scope>
@@ -80,10 +81,12 @@ patch_fstab <fstab file> <mount match name> <fs match type> block|mount|fstype|o
 patch_cmdline <cmdline entry name> <replacement string>
 patch_prop <prop file> <prop name> <new prop value>
 patch_ueventd <ueventd file> <device node> <permissions> <chown> <chgrp>
+
 repack_ramdisk
 flash_boot
 flash_dtbo
 write_boot
+
 reset_ak [keep]
 setup_ak
 ```
@@ -140,6 +143,8 @@ Optionally moving ARM builds to tools/arm and putting x86 builds in tools/x86 wi
 4. Modify the anykernel.sh to add your kernel's name, boot partition location, permissions for added ramdisk files, and use methods for any required ramdisk modifications (optionally, also place banner and/or version files in the root to have these displayed during flash)
 
 5. `zip -r9 UPDATE-AnyKernel3.zip * -x .git README.md *placeholder`
+
+_The LICENSE file must remain in the final zip to comply with licenses for binary redistribution and the license of the AK3 scripts._
 
 If supporting a recovery that forces zip signature verification (like Cyanogen Recovery) then you will need to also sign your zip using the method I describe here:
 
