@@ -3,6 +3,10 @@ language: c
 dist: bionic
 cache: ccache
 
+branches:
+  only:
+  - fire-oss
+
 script:
   - git clone https://github.com/theimpulson/aarch64-linux-android-4.9 --depth=1 ~/tc64/
   - git clone https://github.com/theimpulson/arm-linux-androideabi-4.9 --depth=1 ~/tc32/
