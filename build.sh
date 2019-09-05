@@ -41,7 +41,7 @@ function make_kernel() {
   echo -e "$cyan***********************************************"
   echo -e "             Building kernel          "
   echo -e "***********************************************$nocol"
-  make -j8
+  make -j$(nproc --all)
   if ! [ -a $KERNEL_IMG ];
   then
     echo -e "$red Kernel Compilation failed! Fix the errors! $nocol"
@@ -57,7 +57,7 @@ $DTBTOOL -2 -o $DT_IMAGE -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/ar
 # Making zip
 function make_zip() {
 mkdir -p tmp_mod
-make -j4 modules_install INSTALL_MOD_PATH=tmp_mod INSTALL_MOD_STRIP=1
+make -j$(nproc --all) modules_install INSTALL_MOD_PATH=tmp_mod INSTALL_MOD_STRIP=1
 find tmp_mod/ -name '*.ko' -type f -exec cp '{}' $ANYKERNEL_DIR/modules/system/lib/modules/ \;
 cp $KERNEL_IMG $ANYKERNEL_DIR
 cp $DT_IMAGE $ANYKERNEL_DIR
