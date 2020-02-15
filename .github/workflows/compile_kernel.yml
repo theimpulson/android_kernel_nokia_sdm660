@@ -1,0 +1,31 @@
+name: C/C++ CI
+
+on: release
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Clone the clang toolchain
+      run: git clone https://github.com/RaphielGang/aosp-clang $HOME/clang
+
+    - name: Clone the aarch64 variant of GCC
+      run: git clone https://github.com/kdrag0n/aarch64-elf-gcc.git $HOME/aarch64-elf-gcc
+
+    - name: Clone the arm variant of GCC
+      run: git clone https://github.com/kdrag0n/arm-eabi-gcc.git $HOME/arm-eabi-gcc
+
+    - name: Compile the kernel
+      run: ./github_actions.sh
+
+    - name: Upload to release
+      uses: theimpulson/upload-to-release@mime-type
+      with:
+        args: FireKernel*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
