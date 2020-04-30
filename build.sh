@@ -24,17 +24,10 @@ KERNEL_IMG=$KERNEL_DIR/output/arch/arm64/boot/Image.gz-dtb
 UPLOAD_DIR=$BASE_DIR/$DEVICE
 
 # Export
+export PATH="$BASE_DIR/proton-clang/bin:$PATH"
 export ARCH=arm64
-
-export CROSS_COMPILE=$BASE_DIR/aarch64-elf-gcc/bin/aarch64-elf-
-export CROSS_COMPILE_ARM32=$BASE_DIR/arm-eabi-gcc/bin/arm-eabi-
-
-export CLANG_PATH=$BASE_DIR/aosp-clang/bin
-export PATH=${CLANG_PATH}:${PATH}
-export CLANG_TRIPLE=aarch64-linux-gnu-
-export CLANG_TCHAIN="$BASE_DIR/aosp-clang/bin"
-
-export KBUILD_COMPILER_STRING="$(${CLANG_TCHAIN} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')"
+export CROSS_COMPILE=aarch64-linux-gnu-
+export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
 ## Functions ##
 
@@ -43,11 +36,11 @@ function make_kernel() {
   echo -e "$cyan***********************************************"
   echo -e "          Initializing defconfig          "
   echo -e "***********************************************$nocol"
-  make $defconfig O=output/
+  make $defconfig CC=clang O=output/
   echo -e "$cyan***********************************************"
   echo -e "             Building kernel          "
   echo -e "***********************************************$nocol"
-  make -j$(nproc --all) O=output/
+  make -j$(nproc --all) CC=clang O=output/
   if ! [ -a $KERNEL_IMG ];
   then
     echo -e "$red Kernel Compilation failed! Fix the errors! $nocol"
@@ -90,8 +83,8 @@ case $ch in
   2) echo -e "$cyan***********************************************"
      echo -e "          	Clean          "
      echo -e "***********************************************$nocol"
-     make clean O=output/
-     make mrproper O=output/
+     make clean CC=clang O=output/
+     make mrproper CC=clang O=output/
      make_kernel ;;
 esac
 
