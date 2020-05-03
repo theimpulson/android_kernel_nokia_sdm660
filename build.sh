@@ -17,7 +17,7 @@ FINAL_ZIP=$KERNEL_NAME-$VERSION-$DATE-$DEVICE.zip
 defconfig=nokia_defconfig
 
 # Dirs
-BASE_DIR=/media/hdd/aayush/kernel
+BASE_DIR=`pwd`/../
 KERNEL_DIR=$BASE_DIR/sdm660
 ANYKERNEL_DIR=$KERNEL_DIR/AnyKernel3
 KERNEL_IMG=$KERNEL_DIR/output/arch/arm64/boot/Image.gz-dtb
