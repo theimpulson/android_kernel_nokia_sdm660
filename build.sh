@@ -102,7 +102,6 @@ fi
 
 # Clean Up
 function cleanup(){
-rm -rf $KERNEL_DIR/output/
 rm -rf $ANYKERNEL_DIR/Image.gz-dtb
 }
 
