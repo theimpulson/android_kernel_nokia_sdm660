@@ -10,7 +10,7 @@ nocol='\033[0m'
 
 # Kernel details
 KERNEL_NAME="FireKernel"
-VERSION="r2.4"
+VERSION="r2.5"
 DATE=$(date +"%d-%m-%Y-%I-%M")
 DEVICE="NOKIA_SDM660"
 FINAL_ZIP=$KERNEL_NAME-$VERSION-$DATE-$DEVICE.zip
